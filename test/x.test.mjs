@@ -61,13 +61,14 @@ test("old conversations keep using full archive for incremental sync", async () 
   const result = await getReplies(
     "1459755472442040325",
     "https://x.com/example/status/1459755472442040325",
-    "1459755472442040330"
+    "1459755472442040330",
+    "2026-09-13T22:36:00.000Z"
   );
 
   assert.equal(result.endpoint, "tweets/search/all");
   assert.equal(requestUrl.pathname, "/2/tweets/search/all");
-  assert.equal(requestUrl.searchParams.get("since_id"), "1459755472442040330");
-  assert.ok(requestUrl.searchParams.get("start_time"));
+  assert.equal(requestUrl.searchParams.has("since_id"), false);
+  assert.equal(requestUrl.searchParams.get("start_time"), "2026-09-13T22:31:00.000Z");
 });
 
 test("public-page results are explicitly marked partial", async () => {

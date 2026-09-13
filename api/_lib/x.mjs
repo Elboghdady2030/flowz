@@ -109,7 +109,7 @@ export async function getPost(id) {
     avatarUrl: author?.profile_image_url || "", createdAt: data.data?.created_at || postDate(id).toISOString()
   };
 }
-async function getOfficialReplies(tweetId, sourceUrl, sinceId = "") {
+async function getOfficialReplies(tweetId, sourceUrl, sinceId = "", sinceTime = "") {
   const usesArchive = Date.now() - postDate(tweetId).getTime() > 6.5 * 24 * 60 * 60 * 1000;
   const endpoint = usesArchive ? "tweets/search/all" : "tweets/search/recent";
   const maxResults = usesArchive ? "500" : "100";
@@ -124,9 +124,16 @@ async function getOfficialReplies(tweetId, sourceUrl, sinceId = "") {
     const params = {
       query: `conversation_id:${tweetId} -is:retweet`, max_results: maxResults,
       "tweet.fields": "author_id,created_at,conversation_id,in_reply_to_user_id", expansions: "author_id",
-      "user.fields": "name,username,profile_image_url", next_token: nextToken, since_id: sinceId
+      "user.fields": "name,username,profile_image_url", next_token: nextToken,
+      since_id: usesArchive ? "" : sinceId
     };
-    if (usesArchive) params.start_time = new Date(postDate(tweetId).getTime() - 60_000).toISOString();
+    if (usesArchive) {
+      const cursorTime = Date.parse(sinceTime);
+      const startAt = Number.isFinite(cursorTime)
+        ? cursorTime - 5 * 60_000
+        : postDate(tweetId).getTime() - 60_000;
+      params.start_time = new Date(startAt).toISOString();
+    }
     const data = await xFetch(endpoint, params);
     pages += 1;
     const users = userMap(data.includes);
@@ -147,7 +154,7 @@ async function getOfficialReplies(tweetId, sourceUrl, sinceId = "") {
   return { replies: [...all.values()], newestId, mode: "api", complete: true, pages, endpoint };
 }
 
-export async function getReplies(tweetId, sourceUrl, sinceId = "") {
-  if (process.env.X_BEARER_TOKEN) return getOfficialReplies(tweetId, sourceUrl, sinceId);
+export async function getReplies(tweetId, sourceUrl, sinceId = "", sinceTime = "") {
+  if (process.env.X_BEARER_TOKEN) return getOfficialReplies(tweetId, sourceUrl, sinceId, sinceTime);
   return scrapePublicReplies(tweetId, sourceUrl, sinceId);
 }

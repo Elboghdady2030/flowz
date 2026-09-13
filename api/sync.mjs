@@ -18,7 +18,7 @@ export default async function handler(req, res) {
       ? currentSource.lastSyncedId || ""
       : "";
     console.info("flowz.sync.start", JSON.stringify({ postId: currentSource.id, previousMode: currentSource.syncMode || "none", incremental: Boolean(apiCursor) }));
-    const result = await getReplies(currentSource.id, currentSource.url, apiCursor);
+    const result = await getReplies(currentSource.id, currentSource.url, apiCursor, currentSource.lastSyncedAt || "");
     const { replies, newestId, mode: syncMode, complete, pages, limitation } = result;
     const added = await addPending(replies);
     const totals = await counts();
