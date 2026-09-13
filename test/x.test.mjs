@@ -50,6 +50,26 @@ test("authenticated failures are reported instead of silently falling back", asy
   );
 });
 
+test("old conversations keep using full archive for incremental sync", async () => {
+  process.env.X_BEARER_TOKEN = "test-token";
+  let requestUrl;
+  globalThis.fetch = async (url) => {
+    requestUrl = new URL(url);
+    return Response.json({ meta: { result_count: 0 } });
+  };
+
+  const result = await getReplies(
+    "1459755472442040325",
+    "https://x.com/example/status/1459755472442040325",
+    "1459755472442040330"
+  );
+
+  assert.equal(result.endpoint, "tweets/search/all");
+  assert.equal(requestUrl.pathname, "/2/tweets/search/all");
+  assert.equal(requestUrl.searchParams.get("since_id"), "1459755472442040330");
+  assert.ok(requestUrl.searchParams.get("start_time"));
+});
+
 test("public-page results are explicitly marked partial", async () => {
   delete process.env.X_BEARER_TOKEN;
   globalThis.fetch = async () => new Response(`<!doctype html><html><head><meta property="og:url" content="https://x.com/example/status/1459755472442040325"></head><body>

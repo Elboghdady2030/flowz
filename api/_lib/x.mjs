@@ -110,9 +110,9 @@ export async function getPost(id) {
   };
 }
 async function getOfficialReplies(tweetId, sourceUrl, sinceId = "") {
-  const isInitialArchiveSync = !sinceId && Date.now() - postDate(tweetId).getTime() > 6.5 * 24 * 60 * 60 * 1000;
-  const endpoint = isInitialArchiveSync ? "tweets/search/all" : "tweets/search/recent";
-  const maxResults = isInitialArchiveSync ? "500" : "100";
+  const usesArchive = Date.now() - postDate(tweetId).getTime() > 6.5 * 24 * 60 * 60 * 1000;
+  const endpoint = usesArchive ? "tweets/search/all" : "tweets/search/recent";
+  const maxResults = usesArchive ? "500" : "100";
   const all = new Map();
   const seenTokens = new Set();
   let nextToken = "";
@@ -120,13 +120,13 @@ async function getOfficialReplies(tweetId, sourceUrl, sinceId = "") {
   let pages = 0;
 
   do {
-    if (pages > 0 && isInitialArchiveSync) await wait(1_050);
+    if (pages > 0 && usesArchive) await wait(1_050);
     const params = {
       query: `conversation_id:${tweetId} -is:retweet`, max_results: maxResults,
       "tweet.fields": "author_id,created_at,conversation_id,in_reply_to_user_id", expansions: "author_id",
       "user.fields": "name,username,profile_image_url", next_token: nextToken, since_id: sinceId
     };
-    if (isInitialArchiveSync) params.start_time = new Date(postDate(tweetId).getTime() - 60_000).toISOString();
+    if (usesArchive) params.start_time = new Date(postDate(tweetId).getTime() - 60_000).toISOString();
     const data = await xFetch(endpoint, params);
     pages += 1;
     const users = userMap(data.includes);
