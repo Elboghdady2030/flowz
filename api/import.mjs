@@ -21,6 +21,6 @@ function clean(items) {
 }
 export default async function handler(req, res) {
   if (!method(req, res, ["POST"]) || !protect(req, res, true)) return;
-  try { const items = clean(body(req).items); const added = await addPending(items); json(res, 200, { added }, { "Cache-Control": "no-store" }); }
+  try { const items = clean(body(req, 200_000).items); const added = await addPending(items); json(res, 200, { added }, { "Cache-Control": "no-store" }); }
   catch (error) { handleError(res, error); }
 }
