@@ -8,8 +8,15 @@ function clean(items) {
   return items.map((item) => {
     const text = String(item.text || "").trim().slice(0, 500);
     const author = String(item.author || "@guest").trim().replace(/[^@\w.-]/g, "").slice(0, 40);
+    const externalId = /^\d{10,24}$/.test(String(item.externalId || "")) ? String(item.externalId) : "";
+    const sourceUrl = externalId ? `https://x.com/${author.replace(/^@/, "")}/status/${externalId}` : "";
+    const createdAt = Number.isFinite(Date.parse(item.createdAt)) ? new Date(item.createdAt).toISOString() : new Date().toISOString();
     if (!text) throw Object.assign(new Error("Every comment needs text"), { status: 400, expose: true });
-    return { id: `manual:${randomUUID()}`, author: author.startsWith("@") ? author : `@${author}`, name: author, text, createdAt: new Date().toISOString() };
+    return {
+      id: externalId ? `x:${externalId}` : `manual:${randomUUID()}`,
+      author: author.startsWith("@") ? author : `@${author}`,
+      name: String(item.name || author).trim().slice(0, 80), text, sourceUrl, createdAt
+    };
   });
 }
 export default async function handler(req, res) {
