@@ -6,7 +6,8 @@
     <meta name="theme-color" content="#080908">
     <title>Flowz | Live comment wall</title>
     <meta name="description" content="A live wall of approved community replies.">
-    <link rel="stylesheet" href="styles.css?v=7">
+    <script src="theme.js?v=1"></script>
+    <link rel="stylesheet" href="styles.css?v=8">
   </head>
   <body class="wall-page">
     <main class="wall-shell">
@@ -15,8 +16,14 @@
           <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span>
           <span>flowz</span>
         </a>
-        <div class="live-status" aria-live="polite">
-          <span class="live-dot" aria-hidden="true"></span><span>Live</span><strong id="live-count">0</strong>
+        <div class="wall-actions">
+          <div class="live-status" aria-live="polite">
+            <span class="live-dot" aria-hidden="true"></span><span>Live</span><strong id="live-count">0</strong>
+          </div>
+          <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Switch to light mode" title="Switch to light mode">
+            <span class="theme-icon theme-icon--sun" aria-hidden="true">&#9728;</span>
+            <span class="theme-icon theme-icon--moon" aria-hidden="true">&#9790;</span>
+          </button>
         </div>
       </header>
 
@@ -50,6 +57,6 @@
         <time id="last-updated">Connecting...</time>
       </footer>
     </main>
-    <script src="public.js?v=6" defer></script>
+    <script src="public.js?v=7" defer></script>
   </body>
 </html>

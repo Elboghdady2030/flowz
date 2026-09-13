@@ -34,6 +34,13 @@ function cardMarkup(comment) {
     <footer>${avatar(comment)}<span><strong>${escapeHtml(comment.name || comment.author)}</strong><small>${escapeHtml(comment.author)}</small></span><b aria-label="Approved">&#10003;</b></footer>`;
 }
 
+function cardSize(comment) {
+  const length = Array.from(String(comment.text || "").trim()).length;
+  if (length <= 58) return "flow-size--compact";
+  if (length >= 145) return "flow-size--long";
+  return "flow-size--regular";
+}
+
 function nextComment() {
   while (priorityIds.length) {
     const id = priorityIds.shift();
@@ -58,7 +65,7 @@ function spawnComment() {
   const laneClass = `flow-lane--${(lane % 6) + 1}`;
   const depthClass = `flow-depth--${(lane % 3) + 1}`;
   lane += 1;
-  card.className = `flow-card ${laneClass} ${depthClass}`;
+  card.className = `flow-card ${laneClass} ${depthClass} ${cardSize(comment)}`;
   card.dataset.commentId = comment.id;
   card.innerHTML = cardMarkup(comment);
 
