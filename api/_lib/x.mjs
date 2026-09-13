@@ -1,18 +1,45 @@
 import { load } from "cheerio";
 
 function token() {
-  if (!process.env.X_BEARER_TOKEN) throw Object.assign(new Error("Add X_BEARER_TOKEN in Vercel to enable live X syncing"), { status: 409, expose: true });
+  if (!process.env.X_BEARER_TOKEN) throw Object.assign(new Error("X API is not connected"), { status: 409, expose: true, code: "X_NOT_CONFIGURED" });
   return process.env.X_BEARER_TOKEN;
 }
+
+function xApiError(response, data, path) {
+  const apiError = data.errors?.[0] || {};
+  const rawMessage = data.detail || apiError.detail || data.title || apiError.title || "X API request failed";
+  let message = rawMessage;
+  let status = 502;
+  let code = apiError.type || apiError.code || data.type || `X_HTTP_${response.status}`;
+
+  if (response.status === 401) {
+    code = "X_TOKEN_INVALID";
+    message = "The X API token is invalid or was revoked. Regenerate it in the X Developer Console.";
+  } else if (response.status === 402) {
+    status = 402;
+    code = "X_CREDITS_REQUIRED";
+    message = "X API credits are required to retrieve this conversation from the full archive.";
+  } else if (response.status === 403) {
+    status = 403;
+    code = "X_ARCHIVE_ACCESS_REQUIRED";
+    message = path.includes("search/all")
+      ? "This X project does not currently have full-archive search access."
+      : "The X API denied access to this conversation.";
+  } else if (response.status === 429) {
+    status = 429;
+    code = "X_RATE_LIMITED";
+    message = "X API rate limit reached. Flowz will retry on the next sync.";
+  }
+
+  return Object.assign(new Error(message), { status, expose: true, code, upstreamStatus: response.status });
+}
+
 async function xFetch(path, params = {}) {
   const url = new URL(`https://api.x.com/2/${path}`);
   for (const [key, value] of Object.entries(params)) if (value) url.searchParams.set(key, value);
   const response = await fetch(url, { headers: { Authorization: `Bearer ${token()}` }, cache: "no-store" });
   const data = await response.json().catch(() => ({}));
-  if (!response.ok) {
-    const message = data.detail || data.title || "X API request failed";
-    throw Object.assign(new Error(message), { status: response.status === 429 ? 429 : 502, expose: true });
-  }
+  if (!response.ok) throw xApiError(response, data, path);
   return data;
 }
 function userMap(includes) { return new Map((includes?.users || []).map((user) => [user.id, user])); }
@@ -68,7 +95,10 @@ async function scrapePublicReplies(tweetId, sourceUrl, sinceId = "") {
     newestId = newerId(match[2], newestId);
   });
 
-  return { replies: [...replies.values()], newestId, mode: "public" };
+  return {
+    replies: [...replies.values()], newestId, mode: "public", complete: false, pages: 1,
+    limitation: "X only exposed part of this conversation on its public page."
+  };
 }
 
 export async function getPost(id) {
@@ -87,10 +117,10 @@ async function getOfficialReplies(tweetId, sourceUrl, sinceId = "") {
   const seenTokens = new Set();
   let nextToken = "";
   let newestId = sinceId;
-  let page = 0;
+  let pages = 0;
 
   do {
-    if (page > 0 && isInitialArchiveSync) await wait(1_050);
+    if (pages > 0 && isInitialArchiveSync) await wait(1_050);
     const params = {
       query: `conversation_id:${tweetId} -is:retweet`, max_results: maxResults,
       "tweet.fields": "author_id,created_at,conversation_id,in_reply_to_user_id", expansions: "author_id",
@@ -98,6 +128,7 @@ async function getOfficialReplies(tweetId, sourceUrl, sinceId = "") {
     };
     if (isInitialArchiveSync) params.start_time = new Date(postDate(tweetId).getTime() - 60_000).toISOString();
     const data = await xFetch(endpoint, params);
+    pages += 1;
     const users = userMap(data.includes);
     for (const tweet of data.data || []) {
       if (tweet.id === tweetId) continue;
@@ -111,18 +142,12 @@ async function getOfficialReplies(tweetId, sourceUrl, sinceId = "") {
     if (!candidate || seenTokens.has(candidate)) break;
     seenTokens.add(candidate);
     nextToken = candidate;
-    page += 1;
   } while (nextToken);
 
-  return { replies: [...all.values()], newestId, mode: "api" };
+  return { replies: [...all.values()], newestId, mode: "api", complete: true, pages, endpoint };
 }
 
 export async function getReplies(tweetId, sourceUrl, sinceId = "") {
-  if (process.env.X_BEARER_TOKEN) {
-    try { return await getOfficialReplies(tweetId, sourceUrl, sinceId); }
-    catch (error) {
-      console.error("Official X sync failed; using the public conversation", error);
-    }
-  }
+  if (process.env.X_BEARER_TOKEN) return getOfficialReplies(tweetId, sourceUrl, sinceId);
   return scrapePublicReplies(tweetId, sourceUrl, sinceId);
 }

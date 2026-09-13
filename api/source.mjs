@@ -19,7 +19,15 @@ export default async function handler(req, res) {
       try { metadata = await getPost(parsed.id); }
       catch (error) { console.error("Unable to load X post metadata; continuing with the public source", error); }
     }
-    const value = await saveSource({ ...parsed, ...metadata, connectedAt: new Date().toISOString() });
+    const value = await saveSource({
+      ...parsed,
+      ...metadata,
+      connectedAt: new Date().toISOString(),
+      lastSyncStatus: "ready",
+      lastSyncError: "",
+      syncComplete: false,
+      syncMode: ""
+    });
     json(res, 200, { source: value }, { "Cache-Control": "no-store" });
   } catch (error) { handleError(res, error); }
 }

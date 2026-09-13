@@ -8,7 +8,7 @@ const toast = document.querySelector("#toast");
 const ui = {
   sourceForm: document.querySelector("#source-form"), tweetUrl: document.querySelector("#tweet-url"),
   sourceCard: document.querySelector("#source-card"), sync: document.querySelector("#sync-replies"),
-  syncStatus: document.querySelector("#sync-status"), syncDot: document.querySelector("#sync-dot"),
+  syncStatus: document.querySelector("#sync-status"), syncDetails: document.querySelector("#sync-details"), syncDot: document.querySelector("#sync-dot"),
   autoSync: document.querySelector("#auto-sync"), import: document.querySelector("#import-replies"),
   batch: document.querySelector("#reply-batch"), refresh: document.querySelector("#refresh-queue"),
   clear: document.querySelector("#clear-comments"), logout: document.querySelector("#logout"),
@@ -16,7 +16,7 @@ const ui = {
   rejected: document.querySelector("#rejected-count")
 };
 
-let state = { source: null, pending: [], counts: { pending: 0, approved: 0, rejected: 0 }, xConfigured: false };
+let state = { source: null, pending: [], counts: { pending: 0, approved: 0, rejected: 0 }, xConfigured: false, xMode: "public" };
 let syncRunning = false;
 let autoSyncTimer;
 let loadSequence = 0;
@@ -62,17 +62,33 @@ function avatar(comment) {
 function renderSyncState() {
   let mode = "idle";
   let label = "Connect a post";
-  if (state.source && !state.xConfigured) { mode = "offline"; label = "X connection required"; }
+  let details = "";
+  if (state.source && !state.xConfigured) {
+    mode = state.source.lastSyncStatus === "partial" ? "partial" : "offline";
+    label = state.source.lastSyncStatus === "partial" ? "Partial public results" : "X API connection required";
+    details = state.source.lastSyncStatus === "partial"
+      ? `${state.source.lastSyncFound || 0} replies were visible publicly. Full conversation access requires X API.`
+      : "Public-page syncing can return only a small part of the conversation.";
+  }
   if (state.source && state.xConfigured) {
     mode = "live";
-    label = state.source.lastSyncedAt ? `Live · ${formatDate(state.source.lastSyncedAt)}` : "Ready to collect";
+    label = state.source.lastSyncedAt ? `X API · ${formatDate(state.source.lastSyncedAt)}` : "X API ready";
+    details = state.source.lastSyncedAt
+      ? `${state.source.syncTotal || 0} collected · ${state.source.lastSyncPages || 1} ${state.source.lastSyncPages === 1 ? "page" : "pages"} scanned`
+      : "The first sync will scan the complete conversation archive.";
+  }
+  if (state.source?.lastSyncStatus === "failed") {
+    mode = "offline";
+    label = "X sync needs attention";
+    details = state.source.lastSyncError || "The last X sync failed.";
   }
   if (syncRunning) { mode = "syncing"; label = "Receiving replies..."; }
   ui.syncStatus.textContent = label;
+  ui.syncDetails.textContent = syncRunning ? "Scanning every available results page..." : details;
   ui.syncDot.dataset.state = mode;
-  ui.sync.disabled = !state.source || !state.xConfigured || syncRunning;
-  ui.sync.title = "Collect every publicly available reply";
-  ui.autoSync.disabled = !state.source || !state.xConfigured;
+  ui.sync.disabled = !state.source || syncRunning;
+  ui.sync.title = state.xConfigured ? "Collect all replies through X API" : "Collect the replies exposed on the public X page";
+  ui.autoSync.disabled = !state.source;
 }
 
 function render() {
@@ -97,7 +113,7 @@ function render() {
 
 function restartAutoSync() {
   window.clearInterval(autoSyncTimer);
-  if (!ui.autoSync.checked || !state.source || !state.xConfigured) return;
+  if (!ui.autoSync.checked || !state.source) return;
   autoSyncTimer = window.setInterval(() => {
     if (!document.hidden) syncReplies({ quiet: true });
   }, 30_000);
@@ -121,6 +137,7 @@ async function loadAdmin() {
       state.counts = page.counts;
       state.source = page.source;
       state.xConfigured = page.xConfigured;
+      state.xMode = page.xMode;
       nextOffset = page.nextOffset;
       render();
     }
@@ -132,7 +149,7 @@ async function loadAdmin() {
 }
 
 async function syncReplies({ quiet = false } = {}) {
-  if (syncRunning || !state.source || !state.xConfigured) return;
+  if (syncRunning || !state.source) return;
   syncRunning = true;
   if (!quiet) setBusy(ui.sync, true, "Syncing every reply...");
   renderSyncState();
@@ -141,12 +158,12 @@ async function syncReplies({ quiet = false } = {}) {
     if (!result.busy) {
       await loadAdmin();
       if (result.added > 0) notify(`${result.added} new ${result.added === 1 ? "reply" : "replies"} received`);
-      else if (!quiet) notify("All replies are up to date");
+      else if (!quiet && result.complete) notify("The complete conversation is up to date");
+      else if (!quiet) notify(result.limitation || "Public results may be incomplete", "error");
     }
   } catch (error) {
+    await loadAdmin();
     if (!quiet) notify(error.message, "error");
-    ui.syncStatus.textContent = "Sync interrupted";
-    ui.syncDot.dataset.state = "offline";
   } finally {
     syncRunning = false;
     if (!quiet) setBusy(ui.sync, false);

@@ -171,6 +171,8 @@ html[data-theme="light"] .theme-art { mix-blend-mode: multiply; }
 .sync-state > i[data-state="live"] { background: #54a21f; box-shadow: 0 0 0 5px rgba(84,162,31,.12); }
 .sync-state > i[data-state="syncing"] { background: var(--cyan); box-shadow: 0 0 0 5px rgba(88,216,222,.13); animation: pulse-sync 1.1s ease-in-out infinite; }
 .sync-state > i[data-state="offline"] { background: var(--coral); }
+.sync-state > i[data-state="partial"] { background: #d39a1e; box-shadow: 0 0 0 5px rgba(211,154,30,.12); }
+.sync-details { min-height: 34px; margin-top: -5px; color: var(--muted); font-size: .72rem; line-height: 1.45; }
 .toggle { display: inline-flex; align-items: center; gap: 7px; color: #4f524d; cursor: pointer; user-select: none; }
 .toggle input { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
 .toggle > i { width: 34px; height: 20px; position: relative; border-radius: 10px; background: #d7d9d4; transition: background .18s ease; }

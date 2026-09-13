@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "npx serve .",
-    "start": "npx serve ."
+    "start": "npx serve .",
+    "test": "node --test"
   },
   "devDependencies": {
     "serve": "^14.2.4"

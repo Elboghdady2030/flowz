@@ -11,7 +11,8 @@ export default async function handler(req, res) {
     const nextOffset = pending.length === pageSize && offset + pending.length < totals.pending ? offset + pending.length : null;
     json(res, 200, {
       pending, nextOffset, counts: totals, source: currentSource,
-      xConfigured: true
+      xConfigured: Boolean(process.env.X_BEARER_TOKEN),
+      xMode: process.env.X_BEARER_TOKEN ? "api" : "public"
     }, { "Cache-Control": "no-store" });
   } catch (error) { handleError(res, error); }
 }
