@@ -1,49 +1,41 @@
-# Tweet Comment Flow
+# Flowz
 
-A static web page for collecting replies from a tweet, moderating them in an admin queue, and publishing approved comments into a free-flowing branded card wall.
+Flowz collects replies to an X post, holds every new reply for admin approval, and publishes approved comments to an animated public wall.
 
-## Run Locally
+## Pages
 
-```bash
-npm install
-npm run dev
+- `/` is the clean, presentation-ready live wall.
+- `/admin` is the password-protected source, import, sync, and moderation workflow.
+- `/api/health` reports storage and X integration status.
+
+## Environment
+
+Copy `.env.example` to `.env.local` for local development. The deployed Vercel project receives the Redis variables from its Upstash integration.
+
+```dotenv
+KV_REST_API_URL=
+KV_REST_API_TOKEN=
+ADMIN_PASSWORD=
+SESSION_SECRET=
+X_BEARER_TOKEN=
 ```
 
-You can also open `index.html` directly in a browser.
+`X_BEARER_TOKEN` is optional for manual imports and required for **Sync replies from X**. Create it in an X developer App and store it only as a Vercel secret.
 
-## GitHub Push
+## Workflow
 
-Replace `YOUR_GITHUB_REPO_URL` with your repository URL.
+1. Sign in at `/admin`.
+2. Connect the source X post.
+3. Sync recent replies from X or use manual import.
+4. Approve or reject every pending reply.
+5. Approved replies appear on `/` within five seconds.
 
-```bash
-git init
-git add .
-git commit -m "Build tweet comment flow page"
-git branch -M main
-git remote add origin YOUR_GITHUB_REPO_URL
-git push -u origin main
-```
-
-## Vercel Deploy
+## Deploy
 
 ```bash
-npm install -g vercel
-vercel login
 vercel link
 vercel --prod
+git push origin main
 ```
 
-For GitHub-based deployment, import the GitHub repo in Vercel after pushing. Vercel will deploy each push to `main`.
-
-## Real Tweet Reply Collection
-
-This demo keeps data in the browser with `localStorage`. For production, connect a serverless endpoint to the official X API and store replies in a database. Keep the same moderation rule: new replies should be saved as `pending`, and only approved replies should be returned to the public board.
-
-Recommended production pieces:
-
-- X API bearer token stored as a Vercel environment variable.
-- A scheduled Vercel Cron job to fetch replies for the source tweet.
-- A small database such as Vercel Postgres, Supabase, Neon, or Upstash Redis.
-- Admin authentication before allowing approvals.
-
-Never expose the X API token in browser-side JavaScript.
+The public client never receives Redis, X API, password, or session secrets.

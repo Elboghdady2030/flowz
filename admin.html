@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f4f4f1">
+    <title>Flowz Admin</title>
+    <link rel="stylesheet" href="styles.css?v=3">
+  </head>
+  <body class="admin-page">
+    <main id="login-view" class="login-shell">
+      <form id="login-form" class="login-panel">
+        <span class="brand-mark brand-mark--large" aria-hidden="true"><i></i><i></i><i></i></span>
+        <div><span class="eyebrow">Flowz admin</span><h1>Moderate the live wall</h1><p>Sign in to collect, approve, and publish replies.</p></div>
+        <label for="password">Admin password</label>
+        <input id="password" name="password" type="password" autocomplete="current-password" required>
+        <button type="submit">Sign in</button>
+        <p id="login-error" class="form-message" role="alert"></p>
+      </form>
+    </main>
+
+    <div id="admin-app" class="admin-shell" hidden>
+      <header class="admin-header">
+        <a class="brand" href="/admin" aria-label="Flowz admin"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span><span>flowz</span><small>Admin</small></a>
+        <nav><a class="button button--light" href="/" target="_blank" rel="noopener">Open live wall &#8599;</a><button id="logout" class="icon-button" type="button" title="Sign out" aria-label="Sign out">&#8618;</button></nav>
+      </header>
+
+      <section class="admin-content">
+        <header class="page-heading">
+          <div><span class="eyebrow">Approval workflow</span><h1>Comments</h1></div>
+          <div class="admin-stats" aria-label="Comment totals"><span><strong id="pending-count">0</strong> Pending</span><span><strong id="approved-count">0</strong> Live</span><span><strong id="rejected-count">0</strong> Rejected</span></div>
+        </header>
+
+        <div class="admin-grid">
+          <aside class="admin-controls">
+            <section class="control-section">
+              <div class="section-title"><span>1</span><div><h2>Connect post</h2><p>Add the X post whose replies you want to collect.</p></div></div>
+              <form id="source-form"><label for="tweet-url">X post URL</label><input id="tweet-url" name="tweetUrl" type="url" placeholder="https://x.com/user/status/..." required><button type="submit">Save source</button></form>
+              <div id="source-card" class="source-card">No post connected.</div>
+            </section>
+
+            <section class="control-section">
+              <div class="section-title"><span>2</span><div><h2>Collect replies</h2><p>Sync from X or paste comments manually.</p></div></div>
+              <button id="sync-replies" class="button--accent" type="button">Sync replies from X</button>
+              <details><summary>Manual import</summary><label for="reply-batch">One comment per line</label><textarea id="reply-batch" rows="6" placeholder="@maya: The launch looks fantastic&#10;@omar: Count me in"></textarea><button id="import-replies" class="button--light" type="button">Add to approval queue</button></details>
+            </section>
+
+            <section class="control-section danger-zone"><button id="clear-comments" class="button--danger" type="button">Clear all comments</button></section>
+          </aside>
+
+          <section class="approval-panel">
+            <header><div><span class="eyebrow">Step 3</span><h2>Approve before publishing</h2></div><button id="refresh-queue" class="icon-button icon-button--dark" type="button" title="Refresh queue" aria-label="Refresh queue">&#8635;</button></header>
+            <div id="queue-list" class="approval-list" aria-live="polite"></div>
+          </section>
+        </div>
+      </section>
+      <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    </div>
+    <script src="admin.js?v=3" defer></script>
+  </body>
+</html>
