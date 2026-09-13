@@ -13,11 +13,11 @@ export default async function handler(req, res) {
     if (!currentSource) throw Object.assign(new Error("Connect an X post first"), { status: 400, expose: true });
     locked = (await command(["SET", "flowz:sync-lock", lockId, "NX", "EX", 180])) === "OK";
     if (!locked) return json(res, 200, { busy: true, added: 0, found: 0 }, { "Cache-Control": "no-store" });
-    const { replies, newestId } = await getReplies(currentSource.id, currentSource.url, currentSource.lastSyncedId || "");
+    const { replies, newestId, mode: syncMode } = await getReplies(currentSource.id, currentSource.url, currentSource.lastSyncedId || "");
     const added = await addPending(replies);
     const lastSyncedAt = new Date().toISOString();
-    await saveSource({ ...currentSource, lastSyncedId: newestId || currentSource.lastSyncedId || currentSource.id, lastSyncedAt });
-    json(res, 200, { added, found: replies.length, lastSyncedAt }, { "Cache-Control": "no-store" });
+    await saveSource({ ...currentSource, lastSyncedId: newestId || currentSource.lastSyncedId || currentSource.id, lastSyncedAt, syncMode });
+    json(res, 200, { added, found: replies.length, lastSyncedAt, syncMode }, { "Cache-Control": "no-store" });
   } catch (error) { handleError(res, error); }
   finally {
     if (locked) {

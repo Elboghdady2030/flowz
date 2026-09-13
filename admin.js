@@ -65,13 +65,13 @@ function renderSyncState() {
   if (state.source && !state.xConfigured) { mode = "offline"; label = "X connection required"; }
   if (state.source && state.xConfigured) {
     mode = "live";
-    label = state.source.lastSyncedAt ? `Live · ${formatDate(state.source.lastSyncedAt)}` : "Live · ready";
+    label = state.source.lastSyncedAt ? `Live · ${formatDate(state.source.lastSyncedAt)}` : "Ready to collect";
   }
   if (syncRunning) { mode = "syncing"; label = "Receiving replies..."; }
   ui.syncStatus.textContent = label;
   ui.syncDot.dataset.state = mode;
   ui.sync.disabled = !state.source || !state.xConfigured || syncRunning;
-  ui.sync.title = state.xConfigured ? "Collect every available reply" : "Add X_BEARER_TOKEN in Vercel to enable syncing";
+  ui.sync.title = "Collect every publicly available reply";
   ui.autoSync.disabled = !state.source || !state.xConfigured;
 }
 
@@ -100,7 +100,7 @@ function restartAutoSync() {
   if (!ui.autoSync.checked || !state.source || !state.xConfigured) return;
   autoSyncTimer = window.setInterval(() => {
     if (!document.hidden) syncReplies({ quiet: true });
-  }, 12_000);
+  }, 30_000);
 }
 
 async function loadAdmin() {
@@ -205,4 +205,4 @@ ui.logout.addEventListener("click", async () => { window.clearInterval(autoSyncT
 document.addEventListener("visibilitychange", () => { if (!document.hidden) syncReplies({ quiet: true }); });
 
 try { ui.autoSync.checked = localStorage.getItem("flowz:auto-sync") !== "off"; } catch {}
-loadAdmin();
+loadAdmin().then(() => { if (ui.autoSync.checked) syncReplies({ quiet: true }); });

@@ -15,7 +15,10 @@ export default async function handler(req, res) {
   if (!method(req, res, ["POST"]) || !protect(req, res, true)) return;
   try {
     const parsed = parsePostUrl(body(req).url); let metadata = {};
-    if (process.env.X_BEARER_TOKEN) metadata = await getPost(parsed.id);
+    if (process.env.X_BEARER_TOKEN) {
+      try { metadata = await getPost(parsed.id); }
+      catch (error) { console.error("Unable to load X post metadata; continuing with the public source", error); }
+    }
     const value = await saveSource({ ...parsed, ...metadata, connectedAt: new Date().toISOString() });
     json(res, 200, { source: value }, { "Cache-Control": "no-store" });
   } catch (error) { handleError(res, error); }
