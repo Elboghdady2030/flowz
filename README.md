@@ -20,15 +20,15 @@ SESSION_SECRET=
 X_BEARER_TOKEN=
 ```
 
-`X_BEARER_TOKEN` is optional for manual imports and required for **Sync replies from X**. Create it in an X developer App and store it only as a Vercel secret.
+`X_BEARER_TOKEN` is optional for manual imports and required for live X syncing. Full-archive access is required to collect replies to posts older than seven days. Store the token only as a Vercel secret.
 
 ## Workflow
 
 1. Sign in at `/admin`.
 2. Connect the source X post.
-3. Sync recent replies from X or use manual import.
+3. Leave Auto sync on. The first sync follows every X results page, then checks for new replies every 12 seconds while the admin is open.
 4. Approve or reject every pending reply.
-5. Approved replies appear on `/` within five seconds.
+5. Every pending reply is loaded into the admin queue, and approved replies enter the animated wall within ten seconds.
 
 ## Deploy
 

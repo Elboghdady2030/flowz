@@ -6,9 +6,11 @@ function parse(value) { if (!value) return null; try { return JSON.parse(value);
 
 export async function source() { return parse(await command(["GET", KEYS.source])); }
 export async function saveSource(value) { await command(["SET", KEYS.source, JSON.stringify(value)]); return value; }
-export async function list(status, limit = 100) {
+export async function list(status, limit = 100, offset = 0) {
   const key = KEYS[status]; if (!key) return [];
-  const ids = await command(["ZREVRANGE", key, 0, Math.max(0, limit - 1)]);
+  const start = Math.max(0, Number(offset) || 0);
+  const stop = limit === null ? -1 : start + Math.max(1, Number(limit) || 100) - 1;
+  const ids = await command(["ZREVRANGE", key, start, stop]);
   if (!ids?.length) return [];
   const values = await command(["HMGET", KEYS.comments, ...ids]);
   return values.map(parse).filter(Boolean);

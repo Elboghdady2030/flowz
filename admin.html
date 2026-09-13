@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#f4f4f1">
     <title>Flowz Admin</title>
-    <link rel="stylesheet" href="styles.css?v=3">
+    <link rel="stylesheet" href="styles.css?v=6">
   </head>
   <body class="admin-page">
     <main id="login-view" class="login-shell">
@@ -41,7 +41,11 @@
 
             <section class="control-section">
               <div class="section-title"><span>2</span><div><h2>Collect replies</h2><p>Sync from X or paste comments manually.</p></div></div>
-              <button id="sync-replies" class="button--accent" type="button">Sync replies from X</button>
+              <div class="sync-control">
+                <div class="sync-state" aria-live="polite"><i id="sync-dot" aria-hidden="true"></i><span id="sync-status">Sync idle</span></div>
+                <label class="toggle" for="auto-sync"><span>Auto</span><input id="auto-sync" type="checkbox" checked><i aria-hidden="true"></i></label>
+              </div>
+              <button id="sync-replies" class="button--accent" type="button">Sync all replies now</button>
               <details><summary>Manual import</summary><label for="reply-batch">One comment per line</label><textarea id="reply-batch" rows="6" placeholder="@maya: The launch looks fantastic&#10;@omar: Count me in"></textarea><button id="import-replies" class="button--light" type="button">Add to approval queue</button></details>
             </section>
 
@@ -56,6 +60,6 @@
       </section>
       <div id="toast" class="toast" role="status" aria-live="polite"></div>
     </div>
-    <script src="admin.js?v=5" defer></script>
+    <script src="admin.js?v=7" defer></script>
   </body>
 </html>

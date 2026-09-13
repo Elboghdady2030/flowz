@@ -14,28 +14,57 @@ async function xFetch(path, params = {}) {
   return data;
 }
 function userMap(includes) { return new Map((includes?.users || []).map((user) => [user.id, user])); }
+function postDate(id) {
+  try { return new Date(Number((BigInt(id) >> 22n) + 1288834974657n)); }
+  catch { return new Date(); }
+}
+function newerId(left, right) {
+  try { return BigInt(left || 0) > BigInt(right || 0) ? String(left) : String(right || ""); }
+  catch { return String(left || right || ""); }
+}
+function wait(milliseconds) { return new Promise((resolve) => setTimeout(resolve, milliseconds)); }
 export async function getPost(id) {
   const data = await xFetch(`tweets/${id}`, { "tweet.fields": "author_id,created_at", expansions: "author_id", "user.fields": "name,username,profile_image_url" });
   const author = userMap(data.includes).get(data.data?.author_id);
-  return { text: data.data?.text || "", author: author ? `@${author.username}` : "", name: author?.name || "", avatarUrl: author?.profile_image_url || "" };
+  return {
+    text: data.data?.text || "", author: author ? `@${author.username}` : "", name: author?.name || "",
+    avatarUrl: author?.profile_image_url || "", createdAt: data.data?.created_at || postDate(id).toISOString()
+  };
 }
-export async function getReplies(tweetId, sourceUrl) {
-  const all = []; let nextToken = "";
-  for (let page = 0; page < 3; page += 1) {
-    const data = await xFetch("tweets/search/recent", {
-      query: `conversation_id:${tweetId} -is:retweet`, max_results: "100",
+export async function getReplies(tweetId, sourceUrl, sinceId = "") {
+  const isInitialArchiveSync = !sinceId && Date.now() - postDate(tweetId).getTime() > 6.5 * 24 * 60 * 60 * 1000;
+  const endpoint = isInitialArchiveSync ? "tweets/search/all" : "tweets/search/recent";
+  const maxResults = isInitialArchiveSync ? "500" : "100";
+  const all = new Map();
+  const seenTokens = new Set();
+  let nextToken = "";
+  let newestId = sinceId;
+  let page = 0;
+
+  do {
+    if (page > 0 && isInitialArchiveSync) await wait(1_050);
+    const params = {
+      query: `conversation_id:${tweetId} -is:retweet`, max_results: maxResults,
       "tweet.fields": "author_id,created_at,conversation_id,in_reply_to_user_id", expansions: "author_id",
-      "user.fields": "name,username,profile_image_url", next_token: nextToken
-    });
+      "user.fields": "name,username,profile_image_url", next_token: nextToken, since_id: sinceId
+    };
+    if (isInitialArchiveSync) params.start_time = new Date(postDate(tweetId).getTime() - 60_000).toISOString();
+    const data = await xFetch(endpoint, params);
     const users = userMap(data.includes);
     for (const tweet of data.data || []) {
       if (tweet.id === tweetId) continue;
       const user = users.get(tweet.author_id);
-      all.push({ id: `x:${tweet.id}`, author: user?.username ? `@${user.username}` : "@unknown", name: user?.name || "X user", text: tweet.text,
+      all.set(tweet.id, { id: `x:${tweet.id}`, author: user?.username ? `@${user.username}` : "@unknown", name: user?.name || "X user", text: tweet.text,
         avatarUrl: user?.profile_image_url || "", sourceUrl: user?.username ? `https://x.com/${user.username}/status/${tweet.id}` : sourceUrl,
         createdAt: tweet.created_at || new Date().toISOString() });
+      newestId = newerId(tweet.id, newestId);
     }
-    nextToken = data.meta?.next_token || ""; if (!nextToken) break;
-  }
-  return all;
+    const candidate = data.meta?.next_token || "";
+    if (!candidate || seenTokens.has(candidate)) break;
+    seenTokens.add(candidate);
+    nextToken = candidate;
+    page += 1;
+  } while (nextToken);
+
+  return { replies: [...all.values()], newestId };
 }
