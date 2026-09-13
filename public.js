@@ -36,7 +36,7 @@ function render(data) {
 
   flow.innerHTML = comments.map((comment, index) => {
     return `<article class="flow-card flow-card--${index + 1}">
-      <p>${escapeHtml(comment.text)}</p>
+      <p dir="auto">${escapeHtml(comment.text)}</p>
       <footer>${avatar(comment)}<span><strong>${escapeHtml(comment.name || comment.author)}</strong><small>${escapeHtml(comment.author)}</small></span><b aria-label="Approved">&#10003;</b></footer>
     </article>`;
   }).join("");

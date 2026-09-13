@@ -53,9 +53,9 @@ function render() {
   ui.pending.textContent = state.counts.pending; ui.approved.textContent = state.counts.approved; ui.rejected.textContent = state.counts.rejected;
   ui.tweetUrl.value = state.source?.url || "";
   ui.sourceCard.innerHTML = state.source
-    ? `<strong>${escapeHtml(state.source.author || "Connected X post")}</strong><a href="${escapeHtml(state.source.url)}" target="_blank" rel="noopener">View source &#8599;</a>${state.source.text ? `<p>${escapeHtml(state.source.text)}</p>` : ""}`
+    ? `<strong>${escapeHtml(state.source.author || "Connected X post")}</strong><a href="${escapeHtml(state.source.url)}" target="_blank" rel="noopener">View source &#8599;</a>${state.source.text ? `<p dir="auto">${escapeHtml(state.source.text)}</p>` : ""}`
     : "No post connected.";
-  ui.sync.disabled = !state.source;
+  ui.sync.disabled = !state.source || !state.xConfigured;
   ui.sync.title = state.xConfigured ? "Sync recent replies" : "Add X_BEARER_TOKEN in Vercel to enable syncing";
 
   if (!state.pending.length) {
@@ -64,7 +64,7 @@ function render() {
   }
   queueList.innerHTML = state.pending.map((comment) => `<article class="approval-card" data-id="${escapeHtml(comment.id)}">
     <header>${avatar(comment)}<span><strong>${escapeHtml(comment.name || comment.author)}</strong><small>${escapeHtml(comment.author)} &middot; ${escapeHtml(formatDate(comment.createdAt))}</small></span><em>Pending</em></header>
-    <p>${escapeHtml(comment.text)}</p><footer><button class="button--approve" type="button" data-action="approved">Approve & publish</button><button class="button--reject" type="button" data-action="rejected">Reject</button></footer>
+    <p dir="auto">${escapeHtml(comment.text)}</p><footer><button class="button--approve" type="button" data-action="approved">Approve & publish</button><button class="button--reject" type="button" data-action="rejected">Reject</button></footer>
   </article>`).join("");
 }
 
