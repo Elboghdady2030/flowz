@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Tweet Comment Flow</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="topbar">
+        <a class="brand" href="#board" aria-label="Tweet Comment Flow home">
+          <span class="brand-mark" aria-hidden="true"></span>
+          <span>FlowProof</span>
+        </a>
+        <div class="status-strip" aria-label="Comment status">
+          <span><strong id="pending-count">0</strong> pending</span>
+          <span><strong id="published-count">0</strong> live</span>
+          <span><strong id="rejected-count">0</strong> rejected</span>
+        </div>
+      </header>
+
+      <section class="workspace" aria-label="Tweet comment moderation workspace">
+        <aside class="control-panel" aria-label="Collection and admin controls">
+          <section class="panel-section">
+            <div class="section-heading">
+              <span class="eyebrow">Source</span>
+              <h1>Tweet comment collector</h1>
+            </div>
+            <form id="tweet-form" class="source-form">
+              <label for="tweet-url">Tweet URL</label>
+              <div class="input-row">
+                <input id="tweet-url" name="tweetUrl" type="url" placeholder="https://x.com/user/status/..." autocomplete="off">
+                <button type="submit">Set</button>
+              </div>
+            </form>
+            <p id="source-label" class="source-label">No tweet connected yet.</p>
+          </section>
+
+          <section class="panel-section">
+            <div class="section-heading compact">
+              <span class="eyebrow">Collect</span>
+              <h2>Incoming replies</h2>
+            </div>
+            <textarea id="reply-batch" rows="5" placeholder="@maya: This launch looks sharp&#10;@omar: Count me in for the beta"></textarea>
+            <div class="button-row">
+              <button id="import-replies" type="button">Import Replies</button>
+              <button id="toggle-live" class="secondary" type="button">Start Live Demo</button>
+            </div>
+          </section>
+
+          <section class="panel-section admin-section">
+            <div class="section-heading compact">
+              <span class="eyebrow">Admin</span>
+              <h2>Approval queue</h2>
+            </div>
+            <div id="queue-list" class="queue-list" aria-live="polite"></div>
+          </section>
+        </aside>
+
+        <section id="board" class="flow-board" aria-label="Published comment flow">
+          <div class="board-toolbar">
+            <div>
+              <span class="eyebrow">Live Board</span>
+              <h2>Approved comments flow here</h2>
+            </div>
+            <button id="clear-board" class="ghost" type="button" title="Clear demo data">Clear</button>
+          </div>
+
+          <div class="brand-river" aria-hidden="true">
+            <span>FlowProof</span>
+            <span>Launch</span>
+            <span>Signal</span>
+            <span>Community</span>
+            <span>Live</span>
+          </div>
+
+          <div id="flow-stage" class="flow-stage">
+            <div class="empty-state" id="empty-state">
+              <img src="assets/comment-spark.svg" alt="">
+              <p>Approved comments will appear as moving cards.</p>
+            </div>
+          </div>
+
+          <div class="published-rail" aria-label="Live comments list">
+            <div class="rail-heading">
+              <span>Live comments</span>
+              <button id="export-json" class="ghost small" type="button">Export JSON</button>
+            </div>
+            <ul id="published-list"></ul>
+          </div>
+        </section>
+      </section>
+    </main>
+
+    <script src="app.js"></script>
+  </body>
+</html>

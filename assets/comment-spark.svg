@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="220" viewBox="0 0 320 220" role="img" aria-labelledby="title">
+  <title id="title">Comment cards flowing around a brand mark</title>
+  <rect width="320" height="220" rx="18" fill="#fff"/>
+  <path d="M39 56h104c12 0 22 10 22 22v39c0 12-10 22-22 22h-48l-31 28 7-28H39c-12 0-22-10-22-22V78c0-12 10-22 22-22Z" fill="#ff684f"/>
+  <path d="M181 35h92c11 0 20 9 20 20v42c0 11-9 20-20 20h-26l5 24-27-24h-44c-11 0-20-9-20-20V55c0-11 9-20 20-20Z" fill="#1aa997"/>
+  <path d="M154 126h95c12 0 22 10 22 22v26c0 12-10 22-22 22h-95c-12 0-22-10-22-22v-26c0-12 10-22 22-22Z" fill="#f4c95d"/>
+  <rect x="74" y="82" width="58" height="8" rx="4" fill="#fff"/>
+  <rect x="55" y="103" width="82" height="8" rx="4" fill="#fff"/>
+  <rect x="194" y="62" width="65" height="8" rx="4" fill="#fff"/>
+  <rect x="186" y="84" width="78" height="8" rx="4" fill="#fff"/>
+  <rect x="159" y="150" width="75" height="8" rx="4" fill="#171717"/>
+  <circle cx="98" cy="29" r="10" fill="#3978e7"/>
+  <circle cx="284" cy="164" r="8" fill="#6b4fc8"/>
+  <circle cx="42" cy="184" r="7" fill="#1aa997"/>
+</svg>
