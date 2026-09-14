@@ -5,6 +5,8 @@ const sourceTitle = document.querySelector("#source-title");
 const lastUpdated = document.querySelector("#last-updated");
 
 const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+const mobileLayout = window.matchMedia("(max-width: 760px)");
+const tabletLayout = window.matchMedia("(max-width: 1100px)");
 const activeIds = new Set();
 const priorityIds = [];
 let comments = [];
@@ -30,8 +32,8 @@ function avatar(comment) {
 }
 
 function cardMarkup(comment) {
-  return `<p dir="auto">${escapeHtml(comment.text)}</p>
-    <footer>${avatar(comment)}<span><strong>${escapeHtml(comment.name || comment.author)}</strong><small>${escapeHtml(comment.author)}</small></span><b aria-label="Approved">&#10003;</b></footer>`;
+  return `<header class="flow-author">${avatar(comment)}<span><strong>${escapeHtml(comment.name || comment.author)}</strong><small>${escapeHtml(comment.author)}</small></span><b aria-label="Approved">&#10003;</b></header>
+    <p dir="auto">${escapeHtml(comment.text)}</p>`;
 }
 
 function cardSize(comment) {
@@ -62,10 +64,12 @@ function spawnComment() {
   if (!comment) return;
 
   const card = document.createElement("article");
-  const laneClass = `flow-lane--${(lane % 6) + 1}`;
+  const laneCount = mobileLayout.matches ? 1 : tabletLayout.matches ? 2 : 3;
+  const laneClass = `flow-lane--${(lane % laneCount) + 1}`;
   const depthClass = `flow-depth--${(lane % 3) + 1}`;
+  const sideClass = lane % 2 ? "flow-side--end" : "flow-side--start";
   lane += 1;
-  card.className = `flow-card ${laneClass} ${depthClass} ${cardSize(comment)}`;
+  card.className = `flow-card ${laneClass} ${depthClass} ${sideClass} ${cardSize(comment)}`;
   card.dataset.commentId = comment.id;
   card.innerHTML = cardMarkup(comment);
 
@@ -91,7 +95,7 @@ function restartFlow() {
   if (!comments.length) return;
 
   spawnComment();
-  const interval = window.matchMedia("(max-width: 760px)").matches ? 3600 : 2800;
+  const interval = mobileLayout.matches ? 5200 : 2800;
   spawnTimer = window.setInterval(spawnComment, interval);
 }
 
@@ -139,6 +143,8 @@ async function refresh() {
 }
 
 prefersReducedMotion.addEventListener("change", restartFlow);
+mobileLayout.addEventListener("change", restartFlow);
+tabletLayout.addEventListener("change", restartFlow);
 document.addEventListener("visibilitychange", () => {
   if (!document.hidden && comments.length && !flow.children.length) spawnComment();
 });
