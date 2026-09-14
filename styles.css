@@ -29,35 +29,36 @@ h1, h2, h3, p { margin: 0; }
 
 /* Public wall */
 .wall-page {
-  --wall-bg: #080908;
+  --wall-bg: #0b2528;
   --wall-fg: #fff;
-  --wall-muted: #d4d5d2;
-  --wall-faint: #949791;
-  --wall-line: #272926;
-  --wall-status-line: #343633;
-  --wall-quote: #3b3e39;
-  --wall-stage: radial-gradient(circle at 50% 45%, #171916 0, #0c0d0c 42%, #080908 75%);
-  --wall-grid: rgba(255,255,255,.08);
-  --wall-mobile-footer: rgba(8,9,8,.94);
+  --wall-muted: #d4e0db;
+  --wall-faint: #9bb0a9;
+  --wall-line: #205047;
+  --wall-status-line: #35665d;
+  --wall-quote: #2a554d;
+  --wall-stage: radial-gradient(circle at 50% 45%, #183c36 0, #102f2e 45%, #0b2528 78%);
+  --wall-grid: rgba(125,180,161,.1);
+  --wall-mobile-footer: rgba(11,37,40,.94);
   background: var(--wall-bg);
   color: var(--wall-fg);
   overflow: hidden;
   transition: background-color .35s ease, color .35s ease;
 }
 html[data-theme="light"] .wall-page {
-  --wall-bg: #f4f5f1;
-  --wall-fg: #141512;
-  --wall-muted: #555951;
-  --wall-faint: #676b64;
-  --wall-line: #d5d9d1;
-  --wall-status-line: #cdd1c8;
-  --wall-quote: #c8ccc3;
-  --wall-stage: radial-gradient(circle at 50% 45%, #fff 0, #eef0eb 48%, #e4e7e0 100%);
-  --wall-grid: rgba(18,19,17,.09);
-  --wall-mobile-footer: rgba(244,245,241,.94);
+  --wall-bg: #e7f0eb;
+  --wall-fg: #0b2528;
+  --wall-muted: #31564d;
+  --wall-faint: #57736b;
+  --wall-line: #b8cec4;
+  --wall-status-line: #adc6ba;
+  --wall-quote: #b3cbc0;
+  --wall-stage: radial-gradient(circle at 50% 45%, #f8fbf9 0, #e2eee8 48%, #d3e4dc 100%);
+  --wall-grid: rgba(32,80,71,.1);
+  --wall-mobile-footer: rgba(231,240,235,.94);
 }
 .wall-shell { min-height: 100svh; display: grid; grid-template-rows: 74px minmax(0, 1fr) 58px; }
 .wall-header, .wall-footer { position: relative; z-index: 20; display: flex; align-items: center; justify-content: space-between; gap: 18px; padding: 0 clamp(18px, 4vw, 58px); }
+.wall-header { justify-content: flex-end; }
 .brand--light { color: var(--wall-fg); }
 .wall-actions { display: inline-flex; align-items: center; gap: 13px; }
 .live-status { min-height: 32px; display: inline-flex; align-items: center; gap: 8px; color: var(--wall-muted); font-size: .8rem; }
