@@ -95,7 +95,7 @@ function restartFlow() {
   if (!comments.length) return;
 
   spawnComment();
-  const interval = mobileLayout.matches ? 5200 : 2800;
+  const interval = mobileLayout.matches ? 4000 : 2000;
   spawnTimer = window.setInterval(spawnComment, interval);
 }
 
