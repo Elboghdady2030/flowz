@@ -113,7 +113,6 @@ html[data-theme="light"] .theme-art { mix-blend-mode: multiply; }
 .theme-art--sword { left: 14%; width: clamp(86px, 8vw, 126px); animation: textile-rise-two 42s linear -6s infinite; }
 .theme-art--spiral { right: 25%; width: clamp(96px, 10vw, 152px); animation: textile-rise-one 40s linear -33s infinite; }
 .motion-logo { width: 62px; height: 62px; border-radius: 16px; background: var(--coral); color: white; font-size: 1.5rem; font-weight: 900; }
-.motion-logo--one { left: 8%; bottom: -90px; animation: ambient-rise-one 26s linear -5s infinite; }
 .motion-logo--two { right: 20%; bottom: -90px; width: 78px; height: 42px; border-radius: 21px; background: var(--lime); color: #182000; font-size: .68rem; animation: ambient-rise-two 31s linear -17s infinite; }
 .motion-heart { right: 7%; bottom: -80px; width: 58px; height: 58px; animation: ambient-rise-two 24s linear -9s infinite; }
 .motion-heart i, .motion-heart i::before, .motion-heart i::after { width: 28px; height: 28px; display: block; background: var(--coral); }
@@ -288,7 +287,6 @@ details[open] summary { margin-bottom: 5px; }
   .theme-art--portrait { right: -20px; width: 92px; }
   .theme-art--sword { left: 4%; width: 82px; }
   .theme-art--spiral { right: 24%; width: 92px; }
-  .motion-logo--one { left: 76%; }
   .motion-heart { right: auto; left: 3%; }
   .motion-envelope, .motion-logo--two { display: none; }
   .wall-footer { background: var(--wall-mobile-footer); backdrop-filter: blur(14px); }
