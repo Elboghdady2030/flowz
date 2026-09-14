@@ -106,6 +106,26 @@ html[data-theme="light"] .theme-icon--moon { display: grid; }
 .motion-logo, .motion-heart, .motion-envelope { position: absolute; display: grid; place-items: center; filter: drop-shadow(0 18px 22px rgba(0,0,0,.28)); will-change: transform; }
 .partner-logos { position: absolute; inset: 0; overflow: hidden; }
 .partner-logo { position: absolute; left: var(--x); bottom: -110px; width: clamp(118px, var(--w), 270px); max-height: 92px; object-fit: contain; opacity: 0; filter: drop-shadow(0 16px 24px rgba(0,0,0,.22)); transform-origin: center; will-change: transform, opacity; animation: partner-logo-rise var(--duration) linear var(--delay) infinite; }
+.partner-logo:nth-child(1) { --x: 3%; --w: 18vw; --delay: -12s; --duration: 68s; --sway: 28px; --depth: .78; }
+.partner-logo:nth-child(2) { --x: 27%; --w: 16vw; --delay: -31s; --duration: 76s; --sway: -34px; --depth: .65; }
+.partner-logo:nth-child(3) { --x: 55%; --w: 21vw; --delay: -49s; --duration: 82s; --sway: 24px; --depth: .82; }
+.partner-logo:nth-child(4) { --x: 76%; --w: 17vw; --delay: -7s; --duration: 71s; --sway: -26px; --depth: .7; }
+.partner-logo:nth-child(5) { --x: 14%; --w: 13vw; --delay: -56s; --duration: 79s; --sway: 38px; --depth: .72; }
+.partner-logo:nth-child(6) { --x: 42%; --w: 18vw; --delay: -21s; --duration: 73s; --sway: -30px; --depth: .88; }
+.partner-logo:nth-child(7) { --x: 68%; --w: 20vw; --delay: -63s; --duration: 86s; --sway: 32px; --depth: .64; }
+.partner-logo:nth-child(8) { --x: 5%; --w: 14vw; --delay: -39s; --duration: 69s; --sway: -24px; --depth: .84; }
+.partner-logo:nth-child(9) { --x: 31%; --w: 17vw; --delay: -4s; --duration: 78s; --sway: 36px; --depth: .68; }
+.partner-logo:nth-child(10) { --x: 58%; --w: 16vw; --delay: -27s; --duration: 72s; --sway: -38px; --depth: .76; }
+.partner-logo:nth-child(11) { --x: 79%; --w: 15vw; --delay: -52s; --duration: 84s; --sway: 22px; --depth: .9; }
+.partner-logo:nth-child(12) { --x: 18%; --w: 15vw; --delay: -17s; --duration: 75s; --sway: -28px; --depth: .66; }
+.partner-logo:nth-child(13) { --x: 47%; --w: 16vw; --delay: -67s; --duration: 88s; --sway: 30px; --depth: .8; }
+.partner-logo:nth-child(14) { --x: 72%; --w: 16vw; --delay: -35s; --duration: 74s; --sway: -32px; --depth: .73; }
+.partner-logo:nth-child(15) { --x: 7%; --w: 12vw; --delay: -24s; --duration: 81s; --sway: 26px; --depth: .86; }
+.partner-logo:nth-child(16) { --x: 36%; --w: 14vw; --delay: -58s; --duration: 77s; --sway: -36px; --depth: .69; }
+.partner-logo:nth-child(17) { --x: 62%; --w: 21vw; --delay: -14s; --duration: 85s; --sway: 34px; --depth: .74; }
+.partner-logo:nth-child(18) { --x: 81%; --w: 19vw; --delay: -44s; --duration: 70s; --sway: -22px; --depth: .83; }
+.partner-logo:nth-child(19) { --x: 22%; --w: 20vw; --delay: -72s; --duration: 89s; --sway: 40px; --depth: .67; }
+.partner-logo:nth-child(20) { --x: 52%; --w: 15vw; --delay: -9s; --duration: 80s; --sway: -30px; --depth: .79; }
 html[data-theme="light"] .partner-logo { filter: brightness(0) saturate(100%) invert(27%) sepia(74%) saturate(1250%) hue-rotate(186deg) brightness(82%) contrast(94%); mix-blend-mode: multiply; }
 .theme-art { position: absolute; bottom: -190px; width: clamp(98px, 11vw, 160px); aspect-ratio: 1; object-fit: cover; clip-path: inset(1.8% round 3px); opacity: 0; filter: saturate(.88) contrast(1.08) brightness(.78) drop-shadow(0 24px 28px rgba(0,0,0,.34)); will-change: transform, opacity, filter; }
 html[data-theme="light"] .theme-art { mix-blend-mode: multiply; }
