@@ -58,7 +58,12 @@ html[data-theme="light"] .wall-page {
 }
 .wall-shell { min-height: 100svh; display: grid; grid-template-rows: 74px minmax(0, 1fr) 58px; }
 .wall-header, .wall-footer { position: relative; z-index: 20; display: flex; align-items: center; justify-content: space-between; gap: 18px; padding: 0 clamp(18px, 4vw, 58px); }
-.wall-header { justify-content: flex-end; }
+.wall-header { justify-content: space-between; }
+.wall-brand { width: clamp(126px, 14vw, 178px); flex: 0 1 auto; line-height: 0; }
+.wall-brand__logo { display: block; width: 100%; height: auto; }
+.wall-brand__logo--light { display: none; }
+html[data-theme="light"] .wall-brand__logo--dark { display: none; }
+html[data-theme="light"] .wall-brand__logo--light { display: block; }
 .brand--light { color: var(--wall-fg); }
 .wall-actions { display: inline-flex; align-items: center; gap: 13px; }
 .live-status { min-height: 32px; display: inline-flex; align-items: center; gap: 8px; color: var(--wall-muted); font-size: .8rem; }
@@ -292,6 +297,7 @@ details[open] summary { margin-bottom: 5px; }
 }
 @media (max-width: 420px) {
   .wall-header, .wall-footer { padding-left: 16px; padding-right: 16px; }
+  .wall-brand { width: 118px; }
   .admin-content { padding: 22px 14px; }
   .admin-header { padding-left: 14px; padding-right: 14px; }
   .brand small { display: none; }
