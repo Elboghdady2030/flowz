@@ -7,7 +7,7 @@
     <title>Flowz | Live comment wall</title>
     <meta name="description" content="A live wall of approved community replies.">
     <script src="theme.js?v=1"></script>
-    <link rel="stylesheet" href="styles.css?v=16">
+    <link rel="stylesheet" href="styles.css?v=17">
   </head>
   <body class="wall-page">
     <main class="wall-shell">
@@ -29,7 +29,7 @@
 
       <section id="wall-stage" class="wall-stage" aria-label="Approved live comments">
         <div class="quote-mark quote-mark--open" aria-hidden="true">“</div>
-        <div class="motion-layer" aria-hidden="true">
+        <div class="motion-layer motion-layer--managed" aria-hidden="true">
           <img class="theme-art theme-art--vessel" src="assets/theme/pattern-vessel.png" alt="" decoding="async">
           <img class="theme-art theme-art--dallah" src="assets/theme/pattern-dallah.png" alt="" decoding="async">
           <img class="theme-art theme-art--tree" src="assets/theme/pattern-tree.png" alt="" decoding="async">
@@ -87,6 +87,7 @@
         <time id="last-updated">Connecting...</time>
       </footer>
     </main>
+    <script src="background-flow.js?v=1" defer></script>
     <script src="public.js?v=9" defer></script>
   </body>
 </html>
