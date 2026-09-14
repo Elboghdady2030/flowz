@@ -259,7 +259,7 @@ details[open] summary { margin-bottom: 5px; }
   .wall-shell { min-height: 100svh; grid-template-rows: 64px minmax(0, 1fr) 52px; }
   .wall-stage { min-height: 0; overflow: hidden; padding: 0; }
   .comment-flow { --safe-x: 16px; --lane-gap: 0px; --lane-width: calc(100% - 32px); position: absolute; inset: 0; perspective: 760px; }
-  .flow-card { --mobile-left: 16px; --mobile-width: 84%; left: var(--mobile-left); top: calc(100% + 34px); width: var(--mobile-width); max-width: none; padding: 17px; border-radius: 8px 8px 8px 3px; }
+  .flow-card { --mobile-left: 16px; --mobile-width: 84%; --rise-duration: 14s; left: var(--mobile-left); top: calc(100% + 34px); width: var(--mobile-width); max-width: none; padding: 17px; border-radius: 8px 8px 8px 3px; }
   .flow-card p { font-size: .86rem; }
   .flow-size--compact { --mobile-width: 72%; }
   .flow-size--regular { --mobile-width: 84%; }
