@@ -127,6 +127,8 @@ html[data-theme="light"] .theme-icon--moon { display: grid; }
 .partner-logo:nth-child(19) { --x: 22%; --w: 20vw; --delay: -72s; --duration: 89s; --sway: 40px; --depth: .67; }
 .partner-logo:nth-child(20) { --x: 52%; --w: 15vw; --delay: -9s; --duration: 80s; --sway: -30px; --depth: .79; }
 html[data-theme="light"] .partner-logo { filter: brightness(0) saturate(100%) invert(27%) sepia(74%) saturate(1250%) hue-rotate(186deg) brightness(82%) contrast(94%); mix-blend-mode: multiply; }
+.partner-logo--furas { filter: invert(1) grayscale(1) brightness(1.65) contrast(1.8) drop-shadow(0 16px 24px rgba(0,0,0,.22)); mix-blend-mode: screen; }
+html[data-theme="light"] .partner-logo--furas { filter: saturate(.9) contrast(1.08); mix-blend-mode: multiply; }
 .featured-patterns { position: absolute; inset: 0; overflow: hidden; }
 .featured-pattern { position: absolute; left: var(--x); bottom: -280px; width: clamp(118px, var(--w), 172px); height: auto; opacity: 0; filter: saturate(.88) contrast(1.04) brightness(.9) drop-shadow(0 22px 28px rgba(0,0,0,.25)); transform-origin: center; will-change: transform, opacity, filter; animation: featured-rise-one var(--duration) linear var(--delay) infinite; }
 .featured-pattern:nth-child(even) { animation-name: featured-rise-two; }
