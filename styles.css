@@ -29,6 +29,7 @@ h1, h2, h3, p { margin: 0; }
 
 /* Public wall */
 .wall-page {
+  --wall-header-height: clamp(150px, 14vw, 214px);
   --wall-bg: #0b2528;
   --wall-fg: #fff;
   --wall-muted: #d4e0db;
@@ -56,18 +57,22 @@ html[data-theme="light"] .wall-page {
   --wall-grid: rgba(32,80,71,.1);
   --wall-mobile-footer: rgba(231,240,235,.94);
 }
-.wall-shell { min-height: 100svh; display: grid; grid-template-rows: 74px minmax(0, 1fr) 58px; }
+.wall-shell { min-height: 100svh; display: grid; grid-template-rows: var(--wall-header-height) minmax(0, 1fr) 58px; }
 .wall-header, .wall-footer { position: relative; z-index: 20; display: flex; align-items: center; justify-content: space-between; gap: 18px; padding: 0 clamp(18px, 4vw, 58px); }
-.wall-header { justify-content: space-between; }
-.wall-brand { width: clamp(126px, 14vw, 178px); flex: 0 1 auto; line-height: 0; }
-.wall-brand__logo { display: block; width: 100%; height: auto; }
-.wall-brand__logo--light { display: none; }
-html[data-theme="light"] .wall-brand__logo--dark { display: none; }
-html[data-theme="light"] .wall-brand__logo--light { display: block; }
+.wall-header { position: fixed; inset: 0 0 auto; z-index: 40; min-height: var(--wall-header-height); justify-content: center; background: #00383b; border-bottom: 1px solid rgba(255,255,255,.08); box-shadow: 0 12px 30px rgba(0,0,0,.14); }
+.wall-header__campaign { --header-logo-height: clamp(82px, 7vw, 112px); width: min(100%, 1600px); display: grid; grid-template-columns: minmax(90px, .36fr) minmax(170px, .78fr) minmax(310px, 1.45fr) minmax(190px, .82fr); align-items: center; gap: clamp(20px, 3.5vw, 64px); padding: 30px 0 18px; }
+.wall-header__prompt, .wall-header__saudi-day, .wall-header__national { display: block; width: 100%; height: var(--header-logo-height); object-fit: contain; }
+.wall-header__prompt { max-width: 150px; justify-self: start; }
+.wall-header__saudi-day { max-width: 300px; justify-self: center; }
+.wall-header__national { max-width: 540px; justify-self: center; }
+.wall-brand { width: 100%; max-width: 330px; height: var(--header-logo-height); justify-self: end; line-height: 0; }
+.wall-brand__logo { display: block; width: 100%; height: 100%; object-fit: contain; }
 .brand--light { color: var(--wall-fg); }
-.wall-actions { display: inline-flex; align-items: center; gap: 13px; }
+.wall-actions { position: absolute; top: 11px; left: clamp(18px, 4vw, 58px); display: inline-flex; align-items: center; gap: 13px; }
 .live-status { min-height: 32px; display: inline-flex; align-items: center; gap: 8px; color: var(--wall-muted); font-size: .8rem; }
 .live-status strong { min-width: 28px; padding-left: 8px; border-left: 1px solid var(--wall-status-line); text-align: right; color: var(--wall-fg); }
+.wall-header .live-status { color: #d4e0db; }
+.wall-header .live-status strong { color: white; border-color: #35665d; }
 .live-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--lime); box-shadow: 0 0 0 6px rgba(200, 242, 74, .12); animation: pulse 2s ease-in-out infinite; }
 .theme-toggle { width: 38px; min-height: 38px; padding: 0; border: 1px solid rgba(255,255,255,.18); border-radius: 50%; background: rgba(255,255,255,.08); color: var(--wall-fg); box-shadow: inset 0 1px 0 rgba(255,255,255,.08); }
 .theme-toggle:hover { background: rgba(255,255,255,.14); }
@@ -344,6 +349,12 @@ details[open] summary { margin-bottom: 5px; }
 @keyframes pulse-sync { 50% { opacity: .5; box-shadow: 0 0 0 9px rgba(88,216,222,0); } }
 
 @media (max-width: 1100px) {
+  .wall-page { --wall-header-height: 150px; }
+  .wall-header__campaign { --header-logo-height: 78px; grid-template-columns: minmax(76px, .34fr) minmax(150px, .7fr) minmax(270px, 1.35fr) minmax(150px, .7fr); gap: clamp(14px, 2.3vw, 26px); padding-top: 28px; }
+  .wall-header__prompt { max-width: 110px; }
+  .wall-header__saudi-day { max-width: 230px; }
+  .wall-header__national { max-width: 390px; }
+  .wall-brand { max-width: 220px; }
   .comment-flow { --lane-width: calc((100% - var(--safe-x) - var(--safe-x) - var(--lane-gap)) / 2); }
   .background-lane--1 { --background-lane-x: 16.667%; }
   .background-lane--2 { --background-lane-x: 50%; }
@@ -353,8 +364,17 @@ details[open] summary { margin-bottom: 5px; }
   .approval-list { grid-template-columns: 1fr; }
 }
 @media (max-width: 760px) {
-  .wall-page { overflow: hidden; }
-  .wall-shell { min-height: 100svh; grid-template-rows: 64px minmax(0, 1fr) 52px; }
+  .wall-page { --wall-header-height: 146px; overflow: hidden; }
+  .wall-shell { min-height: 100svh; grid-template-rows: var(--wall-header-height) minmax(0, 1fr) 52px; }
+  .wall-header { padding: 0 16px; }
+  .wall-header__campaign { --header-logo-height: 50px; grid-template-columns: minmax(70px, .72fr) minmax(130px, 1.28fr); grid-template-rows: repeat(2, var(--header-logo-height)); gap: 4px 24px; padding: 26px 0 6px; }
+  .wall-header__prompt { grid-column: 1; grid-row: 1; width: min(17vw, 70px); justify-self: start; }
+  .wall-header__saudi-day { grid-column: 1; grid-row: 2; width: min(34vw, 154px); justify-self: start; }
+  .wall-header__national { grid-column: 2; grid-row: 2; width: min(52vw, 250px); justify-self: end; }
+  .wall-brand { grid-column: 2; grid-row: 1; width: min(36vw, 156px); justify-self: end; }
+  .wall-actions { top: 6px; left: 50%; gap: 8px; transform: translateX(-50%); }
+  .wall-actions .live-status { min-height: 30px; }
+  .theme-toggle { width: 32px; min-height: 32px; }
   .wall-stage { min-height: 0; overflow: hidden; padding: 0; }
   .comment-flow { --safe-x: 16px; --lane-gap: 0px; --lane-width: calc(100% - 32px); position: absolute; inset: 0; perspective: 760px; }
   .flow-card { --mobile-left: 16px; --mobile-width: 84%; --rise-duration: 14s; left: var(--mobile-left); top: calc(100% + 34px); width: var(--mobile-width); max-width: none; padding: 17px; border-radius: 8px 8px 8px 3px; }
@@ -399,13 +419,18 @@ details[open] summary { margin-bottom: 5px; }
 }
 @media (max-width: 420px) {
   .wall-header, .wall-footer { padding-left: 16px; padding-right: 16px; }
-  .wall-brand { width: 118px; }
+  .wall-header__campaign { gap: 2px 18px; }
+  .wall-brand { width: min(34vw, 132px); }
+  .wall-actions .live-status > span:not(.live-dot) { display: none; }
   .admin-content { padding: 22px 14px; }
   .admin-header { padding-left: 14px; padding-right: 14px; }
   .brand small { display: none; }
   .approval-panel > header { padding: 16px; }
   .approval-list { padding: 12px; }
   .approval-card > footer { grid-template-columns: 1fr; }
+}
+@media (max-width: 360px) {
+  .wall-actions { left: 45%; }
 }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; }
