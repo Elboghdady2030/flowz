@@ -81,8 +81,8 @@ html[data-theme="light"] .theme-icon--sun { display: none; }
 html[data-theme="light"] .theme-icon--moon { display: grid; }
 .wall-stage { min-height: 0; position: relative; overflow: hidden; isolation: isolate; background: var(--wall-stage); transition: background .35s ease; }
 .wall-stage::before { content: ""; position: absolute; inset: 0; opacity: .12; background-image: linear-gradient(var(--wall-grid) 1px, transparent 1px), linear-gradient(90deg, var(--wall-grid) 1px, transparent 1px); background-size: 64px 64px; mask-image: radial-gradient(circle, black, transparent 74%); }
-.comment-flow { --safe-x: clamp(26px, 4vw, 72px); --lane-gap: clamp(18px, 2.2vw, 36px); --lane-width: calc((100% - var(--safe-x) - var(--safe-x) - var(--lane-gap) - var(--lane-gap)) / 3); --flow-mid: 310px; --flow-high: 540px; --flow-travel: 640px; position: absolute; inset: 0; z-index: 2; perspective: 1100px; transform-style: preserve-3d; }
-.flow-card { --drift-x: 0px; --tilt: 0deg; --entry-scale: .9; --exit-scale: 1; --rise-duration: 18s; position: absolute; top: 100%; width: min(var(--lane-width), 430px); min-width: 0; border-radius: 10px; background: white; color: var(--ink); padding: clamp(16px, 2vw, 23px); box-shadow: var(--shadow); animation: message-rise var(--rise-duration) linear forwards; transform-origin: 50% 50%; will-change: transform, opacity, filter; }
+.comment-flow { --safe-x: clamp(26px, 4vw, 72px); --lane-gap: clamp(18px, 2.2vw, 36px); --lane-width: calc((100% - var(--safe-x) - var(--safe-x) - var(--lane-gap) - var(--lane-gap)) / 3); --flow-mid: 310px; --flow-high: 540px; --flow-travel: 640px; --flow-duration: 14s; position: absolute; inset: 0; z-index: 2; perspective: 1100px; transform-style: preserve-3d; }
+.flow-card { --drift-x: 0px; --tilt: 0deg; --entry-scale: .9; --exit-scale: 1; position: absolute; top: 100%; width: min(var(--lane-width), 430px); min-width: 0; border-radius: 10px; background: white; color: var(--ink); padding: clamp(16px, 2vw, 23px); box-shadow: var(--shadow); animation: message-rise var(--flow-duration) linear forwards; transform-origin: 50% 50%; will-change: transform, opacity, filter; }
 .flow-author { display: flex; align-items: center; gap: 10px; direction: ltr; }
 .flow-author > span { min-width: 0; display: grid; line-height: 1.15; }
 .flow-card strong { max-width: 24ch; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: .8rem; }
@@ -366,7 +366,7 @@ details[open] summary { margin-bottom: 5px; }
   .theme-toggle { width: 32px; min-height: 32px; }
   .wall-stage { min-height: 0; overflow: hidden; padding: 0; }
   .comment-flow { --safe-x: 16px; --lane-gap: 0px; --lane-width: calc(100% - 32px); position: absolute; inset: 0; perspective: 760px; }
-  .flow-card { --mobile-left: 16px; --mobile-width: 84%; --rise-duration: 14s; left: var(--mobile-left); top: 100%; width: var(--mobile-width); max-width: none; padding: 17px; border-radius: 8px 8px 8px 3px; }
+  .flow-card { --mobile-left: 16px; --mobile-width: 84%; left: var(--mobile-left); top: 100%; width: var(--mobile-width); max-width: none; padding: 17px; border-radius: 8px 8px 8px 3px; }
   .flow-card p { font-size: .86rem; }
   .flow-size--compact { --mobile-width: 72%; }
   .flow-size--regular { --mobile-width: 84%; }

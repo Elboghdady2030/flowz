@@ -17,9 +17,11 @@ let spawnTimer;
 
 function syncFlowTravel() {
   const height = Math.max(flow.clientHeight, 320);
+  const duration = Math.min(16, Math.max(8, (height + 220) / 65));
   flow.style.setProperty("--flow-mid", `${Math.round(height * 0.48)}px`);
   flow.style.setProperty("--flow-high", `${Math.round(height * 0.84)}px`);
   flow.style.setProperty("--flow-travel", `${height}px`);
+  flow.style.setProperty("--flow-duration", `${duration.toFixed(2)}s`);
 }
 
 function escapeHtml(value = "") {
