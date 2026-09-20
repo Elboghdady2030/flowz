@@ -15,6 +15,13 @@ let cursor = 0;
 let lane = 0;
 let spawnTimer;
 
+function syncFlowTravel() {
+  const height = Math.max(flow.clientHeight, 320);
+  flow.style.setProperty("--flow-mid", `${Math.round(height * 0.48)}px`);
+  flow.style.setProperty("--flow-high", `${Math.round(height * 0.84)}px`);
+  flow.style.setProperty("--flow-travel", `${height}px`);
+}
+
 function escapeHtml(value = "") {
   return String(value).replaceAll("&", "&amp;").replaceAll("<", "&lt;")
     .replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&#039;");
@@ -88,6 +95,7 @@ function spawnComment() {
 
 function restartFlow() {
   window.clearInterval(spawnTimer);
+  syncFlowTravel();
   flow.replaceChildren();
   activeIds.clear();
   cursor = 0;
@@ -149,5 +157,13 @@ document.addEventListener("visibilitychange", () => {
   if (!document.hidden && comments.length && !flow.children.length) spawnComment();
 });
 
+if ("ResizeObserver" in window) {
+  const flowResizeObserver = new ResizeObserver(syncFlowTravel);
+  flowResizeObserver.observe(flow);
+} else {
+  window.addEventListener("resize", syncFlowTravel);
+}
+
+syncFlowTravel();
 refresh();
 window.setInterval(refresh, 10000);
