@@ -88,10 +88,10 @@ html[data-theme="light"] .theme-icon--moon { display: grid; }
 .flow-card { --drift-x: 0px; --tilt: 0deg; --entry-scale: .9; --exit-scale: 1; position: absolute; top: 100%; width: min(var(--lane-width), 430px); min-width: 0; border-radius: 10px; background: white; color: var(--ink); padding: clamp(16px, 2vw, 23px); box-shadow: var(--shadow); animation: message-rise var(--flow-duration) linear forwards; transform-origin: 50% 50%; will-change: transform, opacity, filter; }
 .flow-author { display: flex; align-items: center; gap: 10px; direction: ltr; }
 .flow-author > span { min-width: 0; display: grid; line-height: 1.15; }
-.flow-card strong { max-width: 24ch; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: .8rem; }
-.flow-card small { margin-top: 3px; color: #858983; font-size: .67rem; }
+.flow-card strong { max-width: 24ch; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: clamp(.9rem, 1vw, 1.05rem); }
+.flow-card small { margin-top: 3px; color: #858983; font-size: clamp(.74rem, .78vw, .84rem); }
 .flow-author b { width: 18px; height: 18px; margin-left: auto; display: grid; place-items: center; border-radius: 50%; background: #edf7d0; color: #456200; font-size: .67rem; }
-.flow-card p { min-height: 2.8em; margin-top: clamp(14px, 1.7vw, 20px); color: #3d403b; font-size: clamp(.8rem, 1.05vw, 1rem); line-height: 1.48; overflow-wrap: anywhere; }
+.flow-card p { min-height: 2.8em; margin-top: clamp(14px, 1.7vw, 20px); color: #3d403b; font-size: clamp(1rem, 1.35vw, 1.35rem); line-height: 1.52; overflow-wrap: anywhere; }
 .flow-avatar { width: 34px; height: 34px; flex: 0 0 34px; border-radius: 50%; object-fit: cover; }
 .flow-avatar--fallback { display: grid; place-items: center; background: #e9eae6; color: #4e514c; font-size: .65rem; font-weight: 850; }
 .flow-card:nth-child(4n+1) { border-top: 3px solid var(--coral); }
@@ -376,7 +376,7 @@ details[open] summary { margin-bottom: 5px; }
   .wall-stage { min-height: 0; overflow: hidden; padding: 0; }
   .comment-flow { --safe-x: 16px; --lane-gap: 0px; --lane-width: calc(100% - 32px); position: absolute; inset: 0; perspective: 760px; }
   .flow-card { --mobile-left: 16px; --mobile-width: 84%; left: var(--mobile-left); top: 100%; width: var(--mobile-width); max-width: none; padding: 17px; border-radius: 8px 8px 8px 3px; }
-  .flow-card p { font-size: .86rem; }
+  .flow-card p { font-size: 1rem; }
   .flow-size--compact { --mobile-width: 72%; }
   .flow-size--regular { --mobile-width: 84%; }
   .flow-size--long { --mobile-width: calc(100% - 32px); }
