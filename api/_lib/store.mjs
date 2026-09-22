@@ -1,11 +1,28 @@
 import { randomUUID } from "node:crypto";
 import { command, pipeline } from "./redis.mjs";
 
-const KEYS = { comments: "flowz:comments", pending: "flowz:pending", approved: "flowz:approved", rejected: "flowz:rejected", source: "flowz:source" };
+const KEYS = { comments: "flowz:comments", pending: "flowz:pending", approved: "flowz:approved", rejected: "flowz:rejected", source: "flowz:source", settings: "flowz:settings" };
+const DEFAULT_SETTINGS = { headerVisible: true, footerVisible: true };
 function parse(value) { if (!value) return null; try { return JSON.parse(value); } catch { return null; } }
 
 export async function source() { return parse(await command(["GET", KEYS.source])); }
 export async function saveSource(value) { await command(["SET", KEYS.source, JSON.stringify(value)]); return value; }
+export async function wallSettings() {
+  const stored = parse(await command(["GET", KEYS.settings]));
+  return {
+    headerVisible: typeof stored?.headerVisible === "boolean" ? stored.headerVisible : DEFAULT_SETTINGS.headerVisible,
+    footerVisible: typeof stored?.footerVisible === "boolean" ? stored.footerVisible : DEFAULT_SETTINGS.footerVisible
+  };
+}
+export async function saveWallSettings(value) {
+  const current = await wallSettings();
+  const settings = {
+    headerVisible: typeof value.headerVisible === "boolean" ? value.headerVisible : current.headerVisible,
+    footerVisible: typeof value.footerVisible === "boolean" ? value.footerVisible : current.footerVisible
+  };
+  await command(["SET", KEYS.settings, JSON.stringify(settings)]);
+  return settings;
+}
 export async function list(status, limit = 100, offset = 0) {
   const key = KEYS[status]; if (!key) return [];
   const start = Math.max(0, Number(offset) || 0);

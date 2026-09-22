@@ -3,6 +3,8 @@ const empty = document.querySelector("#wall-empty");
 const count = document.querySelector("#live-count");
 const sourceTitle = document.querySelector("#source-title");
 const lastUpdated = document.querySelector("#last-updated");
+const wallHeader = document.querySelector(".wall-header");
+const wallFooter = document.querySelector(".wall-footer");
 
 const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 const mobileLayout = window.matchMedia("(max-width: 760px)");
@@ -124,6 +126,12 @@ function applyFeed(data) {
   comments = incoming;
   knownIds = incomingIds;
   count.textContent = String(data.total || incoming.length);
+  const headerVisible = data.settings?.headerVisible !== false;
+  const footerVisible = data.settings?.footerVisible !== false;
+  document.body.classList.toggle("wall-page--header-hidden", !headerVisible);
+  document.body.classList.toggle("wall-page--footer-hidden", !footerVisible);
+  wallHeader.hidden = !headerVisible;
+  wallFooter.hidden = !footerVisible;
   sourceTitle.textContent = data.source?.author ? `Replies to ${data.source.author}` : "Community replies";
   lastUpdated.textContent = `Updated ${new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}`;
   empty.hidden = incoming.length > 0;

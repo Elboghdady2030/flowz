@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#f4f4f1">
     <title>Flowz Admin</title>
-    <link rel="stylesheet" href="styles.css?v=9">
+    <link rel="stylesheet" href="styles.css?v=21">
   </head>
   <body class="admin-page">
     <main id="login-view" class="login-shell">
@@ -50,17 +50,25 @@
               <details><summary>Manual import</summary><label for="reply-batch">One comment per line</label><textarea id="reply-batch" rows="6" placeholder="@maya: The launch looks fantastic&#10;@omar: Count me in"></textarea><button id="import-replies" class="button--light" type="button">Add to approval queue</button></details>
             </section>
 
+            <section class="control-section">
+              <div class="section-title"><span>3</span><div><h2>Display controls</h2><p>Choose which frame elements appear on the live wall.</p></div></div>
+              <div class="display-controls">
+                <div class="display-control"><span><strong>Header</strong><small>Campaign logos and live status</small></span><label class="toggle" for="show-header"><input id="show-header" type="checkbox" checked aria-label="Show header"><i aria-hidden="true"></i></label></div>
+                <div class="display-control"><span><strong>Footer</strong><small>Source and update information</small></span><label class="toggle" for="show-footer"><input id="show-footer" type="checkbox" checked aria-label="Show footer"><i aria-hidden="true"></i></label></div>
+              </div>
+            </section>
+
             <section class="control-section danger-zone"><button id="clear-comments" class="button--danger" type="button">Clear all comments</button></section>
           </aside>
 
           <section class="approval-panel">
-            <header><div><span class="eyebrow">Step 3</span><h2>Approve before publishing</h2></div><button id="refresh-queue" class="icon-button icon-button--dark" type="button" title="Refresh queue" aria-label="Refresh queue">&#8635;</button></header>
+            <header><div><span class="eyebrow">Step 4</span><h2>Approve before publishing</h2></div><button id="refresh-queue" class="icon-button icon-button--dark" type="button" title="Refresh queue" aria-label="Refresh queue">&#8635;</button></header>
             <div id="queue-list" class="approval-list" aria-live="polite"></div>
           </section>
         </div>
       </section>
       <div id="toast" class="toast" role="status" aria-live="polite"></div>
     </div>
-    <script src="admin.js?v=9" defer></script>
+    <script src="admin.js?v=10" defer></script>
   </body>
 </html>

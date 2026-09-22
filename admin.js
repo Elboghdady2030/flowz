@@ -12,11 +12,12 @@ const ui = {
   autoSync: document.querySelector("#auto-sync"), import: document.querySelector("#import-replies"),
   batch: document.querySelector("#reply-batch"), refresh: document.querySelector("#refresh-queue"),
   clear: document.querySelector("#clear-comments"), logout: document.querySelector("#logout"),
+  showHeader: document.querySelector("#show-header"), showFooter: document.querySelector("#show-footer"),
   pending: document.querySelector("#pending-count"), approved: document.querySelector("#approved-count"),
   rejected: document.querySelector("#rejected-count")
 };
 
-let state = { source: null, pending: [], counts: { pending: 0, approved: 0, rejected: 0 }, xConfigured: false, xMode: "public" };
+let state = { source: null, pending: [], counts: { pending: 0, approved: 0, rejected: 0 }, settings: { headerVisible: true, footerVisible: true }, xConfigured: false, xMode: "public" };
 let syncRunning = false;
 let autoSyncTimer;
 let loadSequence = 0;
@@ -95,6 +96,8 @@ function render() {
   ui.pending.textContent = state.counts.pending;
   ui.approved.textContent = state.counts.approved;
   ui.rejected.textContent = state.counts.rejected;
+  ui.showHeader.checked = state.settings?.headerVisible !== false;
+  ui.showFooter.checked = state.settings?.footerVisible !== false;
   ui.tweetUrl.value = state.source?.url || "";
   ui.sourceCard.innerHTML = state.source
     ? `<strong>${escapeHtml(state.source.author || "Connected X post")}</strong><a href="${escapeHtml(state.source.url)}" target="_blank" rel="noopener">View source &#8599;</a>${state.source.text ? `<p dir="auto">${escapeHtml(state.source.text)}</p>` : ""}`
@@ -194,6 +197,29 @@ ui.autoSync.addEventListener("change", () => {
   restartAutoSync();
   if (ui.autoSync.checked) syncReplies({ quiet: true });
 });
+
+async function saveDisplaySettings() {
+  const previous = { ...state.settings };
+  const settings = { headerVisible: ui.showHeader.checked, footerVisible: ui.showFooter.checked };
+  ui.showHeader.disabled = true;
+  ui.showFooter.disabled = true;
+  try {
+    const result = await request("/api/state", { method: "PATCH", body: JSON.stringify(settings) });
+    state.settings = result.settings;
+    render();
+    notify("Live wall display updated");
+  } catch (error) {
+    state.settings = previous;
+    render();
+    notify(error.message, "error");
+  } finally {
+    ui.showHeader.disabled = false;
+    ui.showFooter.disabled = false;
+  }
+}
+
+ui.showHeader.addEventListener("change", saveDisplaySettings);
+ui.showFooter.addEventListener("change", saveDisplaySettings);
 
 ui.import.addEventListener("click", async () => {
   const lines = ui.batch.value.split("\n").map((line) => line.trim()).filter(Boolean);
