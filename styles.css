@@ -81,8 +81,7 @@ html[data-theme="light"] .wall-page {
 .wall-shell { min-height: 100svh; padding-top: var(--wall-header-space, var(--wall-header-height)); display: grid; grid-template-rows: minmax(0, 1fr) var(--wall-footer-space, var(--wall-footer-height)); }
 .wall-header, .wall-footer { position: relative; z-index: 20; display: flex; align-items: center; justify-content: space-between; gap: 18px; padding: 0 clamp(18px, 4vw, 58px); }
 .wall-header { position: fixed; inset: 0 0 auto; z-index: 40; min-height: var(--wall-header-height); justify-content: center; background: #00383b; border-bottom: 1px solid rgba(255,255,255,.08); box-shadow: 0 12px 30px rgba(0,0,0,.14); }
-.wall-header__campaign { --header-logo-height: clamp(24px, 8vw, 112px); width: min(100%, 1600px); display: flex; align-items: center; justify-content: space-between; gap: clamp(6px, 2vw, 46px); padding: 30px 0 18px; }
-.wall-header__prompt, .wall-header__saudi-day, .wall-header__national { display: block; width: auto; height: var(--header-logo-height); flex: 0 0 auto; object-fit: contain; }
+.wall-header__campaign { --header-logo-height: clamp(44px, 6vw, 88px); width: min(100%, 1600px); display: flex; align-items: center; justify-content: center; padding: 0; }
 .wall-brand { width: auto; height: var(--header-logo-height); flex: 0 0 auto; aspect-ratio: 820 / 265; line-height: 0; }
 .wall-brand__logo { display: block; width: 100%; height: 100%; object-fit: contain; }
 .brand--light { color: var(--wall-fg); }
@@ -102,7 +101,7 @@ html[data-theme="light"] .theme-icon--sun { display: none; }
 html[data-theme="light"] .theme-icon--moon { display: grid; }
 .wall-stage { min-height: 0; position: relative; overflow: hidden; isolation: isolate; background: var(--wall-stage); transition: background .35s ease; }
 .wall-stage::before { content: ""; position: absolute; inset: 0; opacity: .12; background-image: linear-gradient(var(--wall-grid) 1px, transparent 1px), linear-gradient(90deg, var(--wall-grid) 1px, transparent 1px); background-size: 64px 64px; mask-image: radial-gradient(circle, black, transparent 74%); }
-.comment-flow { --safe-x: clamp(40px, 6vw, 128px); --lane-gap: clamp(18px, 2.2vw, 36px); --lane-width: calc((100% - var(--safe-x) - var(--safe-x) - var(--lane-gap) - var(--lane-gap)) / 3); --flow-mid: 310px; --flow-high: 540px; --flow-travel: 640px; --flow-duration: 14s; position: absolute; inset: 0; z-index: 2; }
+.comment-flow { --safe-x: clamp(56px, 8vw, 180px); --lane-gap: clamp(18px, 2.2vw, 36px); --lane-width: calc((100% - var(--safe-x) - var(--safe-x) - var(--lane-gap) - var(--lane-gap)) / 3); --flow-mid: 310px; --flow-high: 540px; --flow-travel: 640px; --flow-duration: 14s; position: absolute; inset: 0; z-index: 2; }
 .flow-card { position: absolute; top: 100%; width: min(var(--lane-width), 430px); min-width: 0; border-radius: 10px; background: white; color: var(--ink); padding: clamp(16px, 2vw, 23px); box-shadow: var(--shadow); filter: none; font-family: "Noto Sans Arabic", Tahoma, Arial, sans-serif; font-synthesis: none; text-rendering: optimizeLegibility; animation: message-rise var(--flow-duration) linear forwards; will-change: transform, opacity; }
 .flow-author { display: flex; align-items: center; gap: 10px; direction: ltr; }
 .flow-author > span { min-width: 0; display: grid; line-height: 1.15; }
@@ -374,8 +373,7 @@ details[open] summary { margin-bottom: 5px; }
 
 @media (max-width: 1100px) {
   .wall-page { --wall-header-height: clamp(116px, 13.6vw, 150px); }
-  .wall-header__campaign { padding-top: 28px; }
-  .comment-flow { --safe-x: clamp(28px, 5vw, 64px); --lane-width: calc((100% - var(--safe-x) - var(--safe-x) - var(--lane-gap)) / 2); }
+  .comment-flow { --safe-x: clamp(40px, 7vw, 96px); --lane-width: calc((100% - var(--safe-x) - var(--safe-x) - var(--lane-gap)) / 2); }
   .background-lane--1 { --background-lane-x: 16.667%; }
   .background-lane--2 { --background-lane-x: 50%; }
   .background-lane--3 { --background-lane-x: 83.333%; }
@@ -387,12 +385,12 @@ details[open] summary { margin-bottom: 5px; }
   .wall-page { --wall-header-height: clamp(82px, 18vw, 104px); --wall-footer-height: 52px; overflow: hidden; }
   .wall-shell { min-height: 100svh; grid-template-rows: minmax(0, 1fr) var(--wall-footer-space, var(--wall-footer-height)); }
   .wall-header { padding: 0 16px; }
-  .wall-header__campaign { padding: 36px 0 8px; }
-  .wall-actions { top: 6px; left: 50%; gap: 8px; transform: translateX(-50%); }
+  .wall-header__campaign { --header-logo-height: clamp(36px, 10vw, 44px); }
+  .wall-actions { top: 50%; left: 12px; gap: 8px; transform: translateY(-50%); }
   .wall-actions .live-status { min-height: 30px; }
   .theme-toggle { width: 32px; min-height: 32px; }
   .wall-stage { min-height: 0; overflow: hidden; padding: 0; }
-  .comment-flow { --mobile-gutter: 24px; --safe-x: var(--mobile-gutter); --lane-gap: 0px; --lane-width: calc(100% - var(--mobile-gutter) - var(--mobile-gutter)); position: absolute; inset: 0; }
+  .comment-flow { --mobile-gutter: 36px; --safe-x: var(--mobile-gutter); --lane-gap: 0px; --lane-width: calc(100% - var(--mobile-gutter) - var(--mobile-gutter)); position: absolute; inset: 0; }
   .flow-card { --mobile-left: var(--mobile-gutter); --mobile-width: 84%; left: var(--mobile-left); top: 100%; width: var(--mobile-width); max-width: none; padding: 17px; border-radius: 8px 8px 8px 3px; }
   .flow-card p { font-size: 1rem; }
   .flow-size--compact { --mobile-width: 72%; }
@@ -444,10 +442,10 @@ details[open] summary { margin-bottom: 5px; }
   .approval-card > footer { grid-template-columns: 1fr; }
 }
 @media (max-width: 360px) {
-  .wall-actions { left: 45%; }
+  .wall-actions { left: 10px; }
 }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; }
   .comment-flow { display: grid; place-items: center; }
-  .flow-card { position: relative; left: auto !important; top: auto; width: min(560px, calc(100% - 48px)) !important; animation: none !important; opacity: 1; filter: none; transform: none; }
+  .flow-card { position: relative; left: auto !important; top: auto; width: min(560px, calc(100% - var(--safe-x) - var(--safe-x))) !important; animation: none !important; opacity: 1; filter: none; transform: none; }
 }

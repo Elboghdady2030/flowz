@@ -8,10 +8,16 @@ const html = await readFile(new URL("../index.html", import.meta.url), "utf8");
 test("reply cards use local sharp typography and safe viewport gutters", () => {
   assert.match(css, /@font-face\s*{[^}]*Noto Sans Arabic[^}]*noto-sans-arabic\.woff2/s);
   assert.match(css, /@font-face\s*{[^}]*Noto Sans Arabic[^}]*noto-sans-arabic-latin\.woff2/s);
-  assert.match(css, /--safe-x:\s*clamp\(40px, 6vw, 128px\)/);
-  assert.match(css, /--safe-x:\s*clamp\(28px, 5vw, 64px\)/);
-  assert.match(css, /--mobile-gutter:\s*24px/);
-  assert.match(html, /styles\.css\?v=23/);
+  assert.match(css, /--safe-x:\s*clamp\(56px, 8vw, 180px\)/);
+  assert.match(css, /--safe-x:\s*clamp\(40px, 7vw, 96px\)/);
+  assert.match(css, /--mobile-gutter:\s*36px/);
+  assert.match(html, /styles\.css\?v=24/);
+});
+
+test("campaign header keeps only the centered Almajdouie logo", () => {
+  assert.doesNotMatch(html, /wall-header__(?:prompt|saudi-day|national)/);
+  assert.match(html, /class="wall-brand"/);
+  assert.match(css, /\.wall-header__campaign\s*{[^}]*justify-content:\s*center/s);
 });
 
 test("reply-card animation avoids rasterizing depth and blur effects", () => {
